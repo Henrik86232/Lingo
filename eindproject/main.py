@@ -1,30 +1,39 @@
-import woorden, random, math
+import woorden
+import random
+import functions
 
-het_woord = "baard"
+# Random woord kiezen
+het_woord = random.choice(woorden.woorden)
+
+# Aantal pogingen
 pogingen = 5
+
+# Eerste letter tonen
+gevonden = [het_woord[0], "_", "_", "_", "_"]
 
 print("Welkom bij Lingo!")
 while pogingen > 0:
-    gok = input("Voer een woord in: ")
-    if len(gok) != 5:
+    # Woord tonen
+    functions.toon_woord(gevonden)
+    # Input vragen
+    gok = functions.vraag_input()
+    # Input controleren
+    if not functions.valideer_input(gok):
         print("Ongeldige invoer, probeer opnieuw.")
         continue
+    # Woord controleren
+    feedback = functions.controleer_woord(
+        gok,
+        het_woord,
+        gevonden
+    )
+    # Feedback tonen
+    functions.toon_feedback(feedback)
 
-    feedback = []
-    for i in range(5):
-        if gok[i] == het_woord[i]:
-            feedback.append("🟩")
-        elif gok[i] in het_woord:
-            feedback.append("🟨")
-        else:
-            feedback.append("⬜")
-
-    print("Feedback:", feedback)
-
+    # Win check
     if gok == het_woord:
         print("Goed geraden!")
         break
-
     else:
         pogingen -= 1
         print(f"Fout! Je hebt nog {pogingen} pogingen over.")
