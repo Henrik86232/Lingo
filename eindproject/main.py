@@ -1,46 +1,42 @@
 import woorden
 import random
 import functions
+import config
 
 spelen = True
 streak = 0
 wins = 0
 losses = 0
 potjes = 0
-print("Welkom bij Lingo!")
+
+print(config.WELKOM_BERICHT)
+
 while spelen:
-# Random woord kiezen
     het_woord = random.choice(woorden.woorden)
 
-# Aantal pogingen
-    pogingen = 5
+    pogingen = config.AANTAL_POGINGEN
 
-# Eerste letter tonen
-    gevonden = [het_woord[0], "_", "_", "_", "_"]
+    gevonden = [het_woord[0]] + ["_"] * (config.WOORD_LENGTE - 1)
 
-    
     while pogingen > 0:
-        # Woord tonen
         functions.toon_woord(gevonden)
-        # Input vragen
+
         gok = functions.vraag_input()
-        # Input controleren
+
         if not functions.valideer_input(gok):
-            print("Ongeldige invoer, probeer opnieuw.")
+            print(config.ONGELDIGE_INVOER_BERICHT)
             continue
 
-        # Woord controleren
         feedback = functions.controleer_woord(
             gok,
             het_woord,
             gevonden
         )
-        # Feedback tonen
+
         functions.toon_feedback(feedback)
 
-        # Win check
         if gok == het_woord:
-            print("Goed geraden!")
+            print(config.GOED_GERADEN_BERICHT)
             wins += 1
             streak += 1
             break
@@ -49,11 +45,15 @@ while spelen:
             print(f"Fout! Je hebt nog {pogingen} pogingen over.")
     else:
         print(f"Jammer, het woord was: {het_woord}")
-        losses =+ 1  
+        losses += 1
         streak = 0
+
     potjes += 1
-        # Opnieuw spelen?
+
     opnieuw = functions.opnieuw_spelen()
     if not opnieuw:
-            spelen = False
-            print(f"\nEindstand: {wins} wins, {losses} losses, {potjes} potjes gespeeld, huidige streak: {streak}") 
+        spelen = False
+        print(
+            f"\nEindstand: {wins} wins, {losses} losses, "
+            f"{potjes} potjes gespeeld, huidige streak: {streak}"
+        )
